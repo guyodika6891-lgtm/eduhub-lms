@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard · EduHub{% endblock %}
+{% block page_title %}Welcome back, {{ current_user.full_name or current_user.username }} 👋{% endblock %}
+{% block page_sub %}Keep learning and earn your certificates{% endblock %}
+
+{% block content %}
+
+<!-- STAT TILES -->
+<div class="stat-grid">
+  <div class="stat-tile fade-up" style="--tile-color:#2563eb;--tile-color-2:#7c3aed;">
+    <div class="tile-top">
+      <div class="tile-icon"><i class="bi bi-book-half"></i></div>
+      <span class="tile-trend"><i class="bi bi-arrow-up-short"></i> Active</span>
+    </div>
+    <div class="tile-value counter" data-target="{{ enrolled|length }}">0</div>
+    <div class="tile-label">Enrolled Courses</div>
+  </div>
+
+  <div class="stat-tile fade-up-1" style="--tile-color:#10b981;--tile-color-2:#059669;">
+    <div class="tile-top">
+      <div class="tile-icon"><i class="bi bi-check2-circle"></i></div>
+    </div>
+    <div class="tile-value counter" data-target="{{ completed_lessons }}">0</div>
+    <div class="tile-label">Lessons Completed</div>
+  </div>
+
+  <div class="stat-tile fade-up-2" style="--tile-color:#f59e0b;--tile-color-2:#d97706;">
+    <div class="tile-top">
+      <div class="tile-icon"><i class="bi bi-star-fill"></i></div>
+    </div>
+    <div class="tile-value counter" data-target="{{ current_user.total_points }}">0</div>
+    <div class="tile-label">Total Points</div>
+  </div>
+
+  <div class="stat-tile fade-up-3" style="--tile-color:#8b5cf6;--tile-color-2:#7c3aed;">
+    <div class="tile-top">
+      <div class="tile-icon"><i class="bi bi-award-fill"></i></div>
+    </div>
+    <div class="tile-value counter" data-target="{{ certificates|length }}">0</div>
+    <div class="tile-label">Certificates Earned</div>
+  </div>
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="p-card mb-4 fade-up-1">
+  <div class="p-card-header">
+    <div>
+      <h6 class="p-card-title">Quick Actions</h6>
+      <p class="p-card-subtitle">Jump straight into learning</p>
+    </div>
+  </div>
+  <div class="qa-grid">
+    <a href="{{ url_for('course_list') }}" class="qa-card" style="--qa-color:#2563eb;--qa-color-2:#7c3aed;">
+      <div class="qa-icon"><i class="bi bi-compass-fill"></i></div>
+      <div class="qa-title">Explore Courses</div>
+      <div class="qa-sub">Find something new to learn</div>
+    </a>
+    <a href="{{ url_for('leaderboard_view') }}" class="qa-card" style="--qa-color:#f59e0b;--qa-color-2:#d97706;">
+      <div class="qa-icon"><i class="bi bi-trophy-fill"></i></div>
+      <div class="qa-title">Leaderboard</div>
+      <div class="qa-sub">See top learners</div>
+    </a>
+    <a href="{{ url_for('my_courses') }}" class="qa-card" style="--qa-color:#10b981;--qa-color-2:#059669;">
+      <div class="qa-icon"><i class="bi bi-play-circle-fill"></i></div>
+      <div class="qa-title">Continue Learning</div>
+      <div class="qa-sub">Resume your courses</div>
+    </a>
+    <a href="{{ url_for('profile') }}" class="qa-card" style="--qa-color:#8b5cf6;--qa-color-2:#7c3aed;">
+      <div class="qa-icon"><i class="bi bi-person-gear"></i></div>
+      <div class="qa-title">Profile</div>
+      <div class="qa-sub">Manage your account</div>
+    </a>
+  </div>
+</div>
+
+<!-- BADGES -->
+{% if current_user.badges %}
+<div class="p-card mb-4 fade-up-2">
+  <div class="p-card-header">
+    <div>
+      <h6 class="p-card-title"><i class="bi bi-award text-warning"></i> Your Badges</h6>
+      <p class="p-card-subtitle">Achievements unlocked</p>
+    </div>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    {% for b in current_user.badges %}
+      <span class="badge-pill-gold" title="{{ b.description }}">
+        <i class="bi {{ b.icon }}"></i> {{ b.name }}
+      </span>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- MY COURSES -->
+<div class="section-hd fade-up-2">
+  <h5><i class="bi bi-collection-play text-primary"></i> My Courses</h5>
+  <a href="{{ url_for('course_list') }}">Browse more →</a>
+</div>
+
+{% if enrolled %}
+<div class="row g-4 stagger">
+  {% for c in enrolled %}
+    {% include "partials/_course_card.html" %}
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state fade-up-2">
+  <div class="empty-icon"><i class="bi bi-journal-bookmark"></i></div>
+  <h5>No courses yet</h5>
+  <p>Start your learning journey by enrolling in a course.</p>
+  <a href="{{ url_for('course_list') }}" class="btn btn-primary">
+    <i class="bi bi-compass"></i> Explore Courses
+  </a>
+</div>
+{% endif %}
+
+<!-- RECENT QUIZZES -->
+{% if attempts %}
+<div class="section-hd mt-5 fade-up-3">
+  <h5><i class="bi bi-clock-history text-primary"></i> Recent Quiz Attempts</h5>
+</div>
+<div class="p-card fade-up-3" style="padding:0;overflow:hidden;">
+  <table class="p-table">
+    <thead>
+      <tr><th>Quiz</th><th>Score</th><th>Date</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for a in attempts %}
+        <tr>
+          <td class="fw-semibold">{{ a.quiz.title }}</td>
+          <td>
+            <span class="pill {% if a.score == a.total %}pill-success{% elif a.score >= a.total * 0.7 %}pill-brand{% else %}pill-warning{% endif %}">
+              {{ a.score }} / {{ a.total }}
+            </span>
+          </td>
+          <td class="text-muted small">{{ a.attempted_at|time_ago }}</td>
+          <td class="text-end">
+            <a href="{{ url_for('quiz_take', quiz_id=a.quiz.id) }}" class="btn btn-sm btn-outline-primary">Retake</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+<!-- CERTIFICATES -->
+{% if certificates %}
+<div class="section-hd mt-5 fade-up-3" id="certificates">
+  <h5><i class="bi bi-award-fill text-warning"></i> My Certificates</h5>
+</div>
+<div class="row g-3 fade-up-3">
+  {% for cert in certificates %}
+    <div class="col-md-6 col-lg-4">
+      <a href="{{ url_for('certificate_view', code=cert.code) }}"
+         class="p-card text-decoration-none d-block" style="border-left:4px solid var(--gold);">
+        <div class="d-flex gap-3 align-items-center">
+          <div class="tile-icon" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);">
+            <i class="bi bi-award-fill"></i>
+          </div>
+          <div class="flex-grow-1 min-w-0">
+            <div class="fw-bold text-truncate">{{ cert.course.title }}</div>
+            <div class="small text-muted">Issued {{ cert.issued_at.strftime("%b %d, %Y") }}</div>
+          </div>
+          <i class="bi bi-arrow-right text-muted"></i>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="mb-4">{% if q %}Results for "{{ q }}"{% else %}All Courses{% endif %}</h3>
+<form class="row g-2 mb-4">
+  <div class="col-md-4"><input class="form-control" name="q" value="{{ q }}" placeholder="Search..."></div>
+  <div class="col-md-3">
+    <select class="form-select" name="category">
+      <option value="">All categories</option>
+      {% for c in categories %}
+        <option value="{{ c }}" {% if c == category %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <select class="form-select" name="level">
+      <option value="">All levels</option>
+      {% for l in levels %}
+        <option value="{{ l }}" {% if l == level %}selected{% endif %}>{{ l }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2"><button class="btn btn-primary w-100">Filter</button></div>
+</form>
+
+{% if courses %}
+<div class="row g-4">
+  {% for c in courses %}{% include "partials/_course_card.html" %}{% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">No courses match your filters.</div>
+{% endif %}
+{% endblock %}

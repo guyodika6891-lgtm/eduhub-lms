@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Certificate · {{ cert.course.title }}{% endblock %}
+{% block page_title %}Certificate of Completion{% endblock %}
+{% block page_sub %}Congratulations on your achievement{% endblock %}
+
+{% block content %}
+<div class="certificate-wrap">
+  <div class="certificate">
+    <div class="cert-header">
+      <i class="bi bi-award-fill"></i>
+      <h1>Certificate of Completion</h1>
+    </div>
+    <p>This is to certify that</p>
+    <h2>{{ cert.user.full_name or cert.user.username }}</h2>
+    <p>has successfully completed the course</p>
+    <h3>{{ cert.course.title }}</h3>
+    <p class="text-muted small">Issued on {{ cert.issued_at.strftime("%B %d, %Y") }}</p>
+    <p class="text-muted small">
+      Certificate ID: <code>{{ cert.code }}</code>
+    </p>
+    <div class="d-print-none mt-4 d-flex gap-2 justify-content-center flex-wrap">
+      <a href="{{ url_for('certificate_download', code=cert.code) }}" class="btn btn-success">
+        <i class="bi bi-download"></i> Download PDF
+      </a>
+      <button onclick="window.print()" class="btn btn-primary">
+        <i class="bi bi-printer"></i> Print
+      </button>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left"></i> Back
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    window.celebrate && window.celebrate();
+    setTimeout(() => window.celebrate && window.celebrate(), 600);
+  });
+</script>
+{% endblock %}

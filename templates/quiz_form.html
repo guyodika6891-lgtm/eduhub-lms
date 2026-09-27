@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    {% if not quiz %}
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h4>Create Quiz — {{ course.title }}</h4>
+          <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">{{ form.title.label(class="form-label") }}{{ form.title(class="form-control") }}</div>
+            <div class="mb-3">{{ form.description.label(class="form-label") }}{{ form.description(class="form-control", rows="3") }}</div>
+            <button class="btn btn-primary">Create</button>
+          </form>
+        </div>
+      </div>
+    {% else %}
+      <h4>{{ quiz.title }} — Add Questions</h4>
+      {% for q in questions %}
+        <div class="card mb-2"><div class="card-body">
+          <strong>{{ loop.index }}. {{ q.body }}</strong>
+          <div class="small text-muted">A. {{ q.option_a }} · B. {{ q.option_b }} · C. {{ q.option_c }} · D. {{ q.option_d }}</div>
+          <span class="badge bg-success">Correct: {{ q.correct|upper }}</span>
+        </div></div>
+      {% endfor %}
+      <form method="post" class="card border-0 shadow-sm mt-3">
+        <div class="card-body">
+          {{ form.hidden_tag() }}
+          <div class="mb-2">{{ form.body(class="form-control", rows="2", placeholder="Question text") }}</div>
+          <div class="row g-2">
+            <div class="col-md-6">{{ form.option_a(class="form-control", placeholder="Option A") }}</div>
+            <div class="col-md-6">{{ form.option_b(class="form-control", placeholder="Option B") }}</div>
+            <div class="col-md-6">{{ form.option_c(class="form-control", placeholder="Option C") }}</div>
+            <div class="col-md-6">{{ form.option_d(class="form-control", placeholder="Option D") }}</div>
+            <div class="col-md-4">{{ form.correct(class="form-select") }}</div>
+            <div class="col-md-4"><button class="btn btn-primary w-100">Add</button></div>
+          </div>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

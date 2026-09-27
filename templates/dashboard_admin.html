@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel · EduHub{% endblock %}
+{% block page_title %}Admin Panel{% endblock %}
+{% block page_sub %}Platform overview and management{% endblock %}
+
+{% block content %}
+
+<div class="stat-grid">
+  <div class="stat-tile fade-up" style="--tile-color:#2563eb;--tile-color-2:#7c3aed;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-people-fill"></i></div></div>
+    <div class="tile-value counter" data-target="{{ stats.users }}">0</div>
+    <div class="tile-label">Total Users</div>
+  </div>
+  <div class="stat-tile fade-up-1" style="--tile-color:#10b981;--tile-color-2:#059669;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-person-video3"></i></div></div>
+    <div class="tile-value counter" data-target="{{ stats.teachers }}">0</div>
+    <div class="tile-label">Teachers</div>
+  </div>
+  <div class="stat-tile fade-up-2" style="--tile-color:#f59e0b;--tile-color-2:#d97706;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-mortarboard-fill"></i></div></div>
+    <div class="tile-value counter" data-target="{{ stats.students }}">0</div>
+    <div class="tile-label">Students</div>
+  </div>
+  <div class="stat-tile fade-up-3" style="--tile-color:#8b5cf6;--tile-color-2:#7c3aed;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-easel2-fill"></i></div></div>
+    <div class="tile-value counter" data-target="{{ stats.courses }}">0</div>
+    <div class="tile-label">Courses</div>
+  </div>
+  <div class="stat-tile fade-up-3" style="--tile-color:#06b6d4;--tile-color-2:#0891b2;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-collection-play-fill"></i></div></div>
+    <div class="tile-value counter" data-target="{{ stats.lessons }}">0</div>
+    <div class="tile-label">Lessons</div>
+  </div>
+  <div class="stat-tile fade-up-3" style="--tile-color:#ef4444;--tile-color-2:#dc2626;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-person-check-fill"></i></div></div>
+    <div class="tile-value counter" data-target="{{ stats.enrollments }}">0</div>
+    <div class="tile-label">Enrollments</div>
+  </div>
+</div>
+
+<div class="row g-4 mt-2">
+  <div class="col-lg-6">
+    <div class="p-card h-100">
+      <div class="p-card-header">
+        <div>
+          <h6 class="p-card-title">Recent Users</h6>
+          <p class="p-card-subtitle">Latest registrations</p>
+        </div>
+      </div>
+      {% if users %}
+        {% for u in users %}
+          <div class="list-row">
+            <div class="list-thumb" style="background:linear-gradient(135deg,#2563eb,#7c3aed);">
+              {{ u.username[0]|upper }}
+            </div>
+            <div class="list-body">
+              <div class="list-title">{{ u.full_name or u.username }}</div>
+              <div class="list-meta">
+                <span>{{ u.email }}</span>
+              </div>
+            </div>
+            <span class="pill {% if u.role == 'admin' %}pill-danger{% elif u.role == 'teacher' %}pill-brand{% else %}pill-neutral{% endif %}">
+              {{ u.role }}
+            </span>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted small">No users yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="p-card h-100">
+      <div class="p-card-header">
+        <div>
+          <h6 class="p-card-title">Recent Courses</h6>
+          <p class="p-card-subtitle">Latest created</p>
+        </div>
+      </div>
+      {% if courses %}
+        {% for c in courses %}
+          <a href="{{ url_for('course_detail', slug=c.slug) }}" class="list-row">
+            <div class="list-thumb">
+              {% if c.cover_url %}
+                <img src="{{ c.cover_url }}" alt="{{ c.title }}">
+              {% else %}
+                <i class="bi bi-mortarboard"></i>
+              {% endif %}
+            </div>
+            <div class="list-body">
+              <div class="list-title">{{ c.title }}</div>
+              <div class="list-meta">
+                <span><i class="bi bi-person"></i> {{ c.instructor.username }}</span>
+                <span><i class="bi bi-people"></i> {{ c.student_count }}</span>
+              </div>
+            </div>
+            {% if c.published %}
+              <span class="pill pill-success">Live</span>
+            {% else %}
+              <span class="pill pill-warning">Draft</span>
+            {% endif %}
+          </a>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted small">No courses yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

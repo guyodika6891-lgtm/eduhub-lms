@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Login · EduHub{% endblock %}
+{% block content_public %}
+
+<link href="{{ url_for('static', filename='css/neumorphic.css') }}" rel="stylesheet">
+
+<div class="auth-wrap">
+  <div class="float-circle"></div>
+  <div class="float-circle"></div>
+  <div class="float-circle"></div>
+  <div class="float-circle"></div>
+
+  <div class="auth-card">
+    <div class="auth-icon">
+      <i class="bi bi-lock-fill"></i>
+    </div>
+
+    <div class="auth-title">
+      <h2>Welcome</h2>
+      <p>Login to continue your journey</p>
+    </div>
+
+    <form method="post">
+      {{ form.hidden_tag() }}
+
+      <div class="nm-field">
+        {{ form.username(placeholder="Username", autocomplete="username") }}
+      </div>
+
+      <div class="nm-field">
+        {{ form.password(placeholder="Password", autocomplete="current-password", id="pw-field") }}
+        <i class="bi bi-eye field-icon" id="toggle-pw"></i>
+      </div>
+
+      <div class="nm-row">
+        <label class="nm-check">
+          <input type="checkbox" name="remember" checked>
+          <span>Remember me</span>
+        </label>
+        <a href="#" class="nm-link">Forgot password?</a>
+      </div>
+
+      <button class="nm-btn" type="submit">
+        <i class="bi bi-box-arrow-in-right"></i> Login
+      </button>
+    </form>
+
+    <p class="nm-footer">
+      Don't have an account? <a href="{{ url_for('register') }}">Create one</a>
+    </p>
+  </div>
+
+  <a href="{{ url_for('register') }}" class="nm-plus" title="Create account">
+    <i class="bi bi-plus-lg"></i>
+  </a>
+</div>
+
+<script>
+  const toggle = document.getElementById('toggle-pw');
+  const pw = document.getElementById('pw-field');
+  if (toggle && pw) {
+    toggle.addEventListener('click', () => {
+      const isPw = pw.type === 'password';
+      pw.type = isPw ? 'text' : 'password';
+      toggle.className = isPw ? 'bi bi-eye-slash field-icon' : 'bi bi-eye field-icon';
+    });
+  }
+</script>
+
+{% endblock %}

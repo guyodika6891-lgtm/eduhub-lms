@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>My Courses</h3>
+{% if courses %}
+<div class="row g-4">{% for c in courses %}{% include "partials/_course_card.html" %}{% endfor %}</div>
+{% else %}
+<div class="alert alert-info">You haven't enrolled yet. <a href="{{ url_for('course_list') }}">Browse →</a></div>
+{% endif %}
+{% endblock %}

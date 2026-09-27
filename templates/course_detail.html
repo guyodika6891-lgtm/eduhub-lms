@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+{% block title %}{{ course.title }} · EduHub{% endblock %}
+{% block page_title %}{{ course.title }}{% endblock %}
+{% block page_sub %}by {{ course.instructor.username }} · {{ course.lesson_count }} lessons{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+  <!-- LEFT: Content -->
+  <div class="col-lg-8">
+
+    {% if course.cover_url %}
+      <img src="{{ course.cover_url }}" class="img-fluid rounded-4 shadow-sm mb-4 w-100" style="max-height:340px;object-fit:cover;" alt="{{ course.title }}">
+    {% endif %}
+
+    <div class="d-flex gap-2 mb-3 flex-wrap">
+      <span class="pill pill-brand">{{ course.category }}</span>
+      <span class="pill pill-neutral">{{ course.level }}</span>
+      {% if not course.published %}
+        <span class="pill pill-warning">Draft</span>
+      {% endif %}
+      {% if course.avg_rating %}
+        <span class="pill pill-warning"><i class="bi bi-star-fill"></i> {{ course.avg_rating }}</span>
+      {% endif %}
+    </div>
+
+    <div class="p-card mb-4">
+      <h6 class="p-card-title mb-3">About this course</h6>
+      <p class="mb-0 text-muted">{{ course.description or "No description yet." }}</p>
+    </div>
+
+    <!-- Curriculum -->
+    <div class="p-card mb-4">
+      <div class="p-card-header">
+        <div>
+          <h6 class="p-card-title">Curriculum</h6>
+          <p class="p-card-subtitle">{{ course.lesson_count }} lessons · {{ course.total_duration }} minutes</p>
+        </div>
+      </div>
+      {% if course.lessons.count() > 0 %}
+        {% for l in course.lessons %}
+          <div class="list-row">
+            <div class="list-thumb" style="background:linear-gradient(135deg,#2563eb,#7c3aed);">
+              <i class="bi bi-play-circle"></i>
+            </div>
+            <div class="list-body">
+              <div class="list-title">{{ l.order_index }}. {{ l.title }}</div>
+              <div class="list-meta"><span><i class="bi bi-clock"></i> {{ l.duration_minutes }} min</span></div>
+            </div>
+            {% if enrolled or current_user.id == course.instructor_id or current_user.is_admin %}
+              <a href="{{ url_for('lesson_view', lesson_id=l.id) }}" class="btn btn-sm btn-primary">
+                Open <i class="bi bi-arrow-right"></i>
+              </a>
+            {% else %}
+              <i class="bi bi-lock text-muted"></i>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted small mb-0">No lessons yet.</p>
+      {% endif %}
+    </div>
+
+    <!-- Quizzes -->
+    {% if quizzes %}
+      <div class="p-card mb-4">
+        <div class="p-card-header">
+          <div>
+            <h6 class="p-card-title">Quizzes</h6>
+            <p class="p-card-subtitle">Test your knowledge</p>
+          </div>
+        </div>
+        {% for q in quizzes %}
+          <div class="list-row">
+            <div class="list-thumb" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+              <i class="bi bi-patch-question"></i>
+            </div>
+            <div class="list-body">
+              <div class="list-title">{{ q.title }}</div>
+              <div class="list-meta"><span>{{ q.questions.count() }} questions</span></div>
+            </div>
+            <a href="{{ url_for('quiz_take', quiz_id=q.id) }}" class="btn btn-sm btn-primary">Take Quiz</a>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Instructor actions -->
+    {% if current_user.id == course.instructor_id or current_user.is_admin %}
+      <div class="p-card mb-4">
+        <h6 class="p-card-title mb-3"><i class="bi bi-gear"></i> Instructor Tools</h6>
+        <div class="qa-grid">
+          <a href="{{ url_for('course_edit', slug=course.slug) }}" class="qa-card" style="--qa-color:#2563eb;--qa-color-2:#7c3aed;">
+            <div class="qa-icon"><i class="bi bi-pencil"></i></div>
+            <div class="qa-title">Edit Course</div>
+          </a>
+          <a href="{{ url_for('lesson_create', slug=course.slug) }}" class="qa-card" style="--qa-color:#10b981;--qa-color-2:#059669;">
+            <div class="qa-icon"><i class="bi bi-plus-circle"></i></div>
+            <div class="qa-title">Add Lesson</div>
+          </a>
+          <a href="{{ url_for('quiz_create', slug=course.slug) }}" class="qa-card" style="--qa-color:#f59e0b;--qa-color-2:#d97706;">
+            <div class="qa-icon"><i class="bi bi-patch-question"></i></div>
+            <div class="qa-title">Add Quiz</div>
+          </a>
+          <form method="post" action="{{ url_for('course_delete', slug=course.slug) }}"
+                onsubmit="return confirm('Delete this course?');" class="m-0">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="qa-card w-100 border-0 bg-transparent text-start" style="--qa-color:#ef4444;--qa-color-2:#dc2626;">
+              <div class="qa-icon"><i class="bi bi-trash"></i></div>
+              <div class="qa-title">Delete</div>
+            </button>
+          </form>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Discussions -->
+    <div class="p-card mb-4">
+      <div class="p-card-header">
+        <div>
+          <h6 class="p-card-title">Discussions</h6>
+          <p class="p-card-subtitle">{{ discussions|length }} threads</p>
+        </div>
+      </div>
+
+      {% if current_user.is_authenticated %}
+        <form method="post" action="{{ url_for('post_discussion', slug=course.slug) }}" class="mb-4">
+          {{ discussion_form.hidden_tag() }}
+          <div class="mb-2">{{ discussion_form.title(class="form-control", placeholder="Discussion title") }}</div>
+          <div class="mb-2">{{ discussion_form.body(class="form-control", rows="3", placeholder="Ask a question...") }}</div>
+          <button class="btn btn-primary btn-sm">Post</button>
+        </form>
+      {% endif %}
+
+      {% for d in discussions %}
+        <a href="{{ url_for('discussion_view', discussion_id=d.id) }}" class="list-row">
+          <div class="list-thumb" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);">
+            <i class="bi bi-chat-dots"></i>
+          </div>
+          <div class="list-body">
+            <div class="list-title">{{ d.title }}</div>
+            <div class="list-meta">
+              <span><i class="bi bi-person"></i> {{ d.author.username }}</span>
+              <span>{{ d.created_at|time_ago }}</span>
+              <span>{{ d.replies.count() }} replies</span>
+            </div>
+          </div>
+        </a>
+      {% else %}
+        <p class="text-muted small mb-0">No discussions yet. Be the first to ask!</p>
+      {% endfor %}
+    </div>
+
+    <!-- Reviews -->
+    <div class="p-card">
+      <div class="p-card-header">
+        <div>
+          <h6 class="p-card-title">Reviews</h6>
+          <p class="p-card-subtitle">{{ reviews|length }} reviews</p>
+        </div>
+      </div>
+
+      {% if current_user.is_authenticated %}
+        <form method="post" action="{{ url_for('post_review', slug=course.slug) }}" class="mb-4">
+          {{ review_form.hidden_tag() }}
+          <div class="row g-2">
+            <div class="col-md-3">{{ review_form.rating(class="form-select") }}</div>
+            <div class="col-md-7">{{ review_form.comment(class="form-control", placeholder="Your thoughts...") }}</div>
+            <div class="col-md-2"><button class="btn btn-primary w-100">Post</button></div>
+          </div>
+        </form>
+      {% endif %}
+
+      {% for r in reviews %}
+        <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
+          <div class="list-thumb" style="width:42px;height:42px;">
+            {{ r.author.username[0]|upper }}
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center">
+              <strong class="small">{{ r.author.username }}</strong>
+              <span class="pill pill-warning"><i class="bi bi-star-fill"></i> {{ r.rating }}</span>
+            </div>
+            <p class="mb-1 small text-muted">{{ r.created_at|time_ago }}</p>
+            <p class="mb-0 small">{{ r.comment }}</p>
+          </div>
+        </div>
+      {% else %}
+        <p class="text-muted small mb-0">No reviews yet.</p>
+      {% endfor %}
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Sticky sidebar -->
+  <div class="col-lg-4">
+    <div class="p-card sticky-top" style="top: 90px;">
+
+      <div class="text-center mb-3">
+        <div class="fs-2 fw-bold text-primary">
+          {% if course.price > 0 %}${{ "%.2f"|format(course.price) }}{% else %}<span class="text-success">Free</span>{% endif %}
+        </div>
+      </div>
+
+      {% if current_user.is_authenticated %}
+        {% if enrolled %}
+          <a href="{{ url_for('my_courses') }}" class="btn btn-success w-100 mb-2">
+            <i class="bi bi-play-circle-fill"></i> Continue Learning
+          </a>
+          <form method="post" action="{{ url_for('unenroll', slug=course.slug) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-outline-secondary w-100 btn-sm">Unenroll</button>
+          </form>
+        {% elif course.price > 0 %}
+          <form method="post" action="{{ url_for('course_buy', slug=course.slug) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-primary w-100"><i class="bi bi-credit-card"></i> Buy Now</button>
+          </form>
+        {% else %}
+          <form method="post" action="{{ url_for('enroll', slug=course.slug) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-primary w-100"><i class="bi bi-lightning-charge-fill"></i> Enroll Free</button>
+          </form>
+        {% endif %}
+      {% else %}
+        <a href="{{ url_for('login', next=url_for('course_detail', slug=course.slug)) }}" class="btn btn-primary w-100">
+          <i class="bi bi-box-arrow-in-right"></i> Login to Enroll
+        </a>
+      {% endif %}
+
+      <hr class="my-3">
+
+      <div class="d-flex flex-column gap-2 small">
+        <div class="d-flex justify-content-between"><span class="text-muted">Lessons</span><strong>{{ course.lesson_count }}</strong></div>
+        <div class="d-flex justify-content-between"><span class="text-muted">Duration</span><strong>{{ course.total_duration }} min</strong></div>
+        <div class="d-flex justify-content-between"><span class="text-muted">Students</span><strong>{{ course.student_count }}</strong></div>
+        <div class="d-flex justify-content-between"><span class="text-muted">Level</span><strong>{{ course.level }}</strong></div>
+        <div class="d-flex justify-content-between"><span class="text-muted">Quizzes</span><strong>{{ quizzes|length }}</strong></div>
+      </div>
+    </div>
+
+    {% if current_user.is_authenticated and enrolled %}
+      <div class="p-card mt-3">
+        <h6 class="p-card-title mb-2"><i class="bi bi-chat-dots text-primary"></i> Class Chat</h6>
+        <div id="chat-box" style="height:200px;overflow-y:auto;background:var(--surface-2);border-radius:10px;padding:12px;font-size:.82rem;line-height:1.5;">
+          <div class="text-muted small">Connecting...</div>
+        </div>
+        <form id="chat-form" class="d-flex gap-2 mt-2">
+          <input class="form-control form-control-sm" id="chat-input" placeholder="Message...">
+          <button class="btn btn-sm btn-primary"><i class="bi bi-send-fill"></i></button>
+        </form>
+      </div>
+      <script>
+        const socket = io();
+        const courseId = {{ course.id }};
+        socket.emit('join_course_chat', {course_id: courseId});
+        const box = document.getElementById('chat-box');
+        box.innerHTML = '';
+        socket.on('chat_message', (d) => {
+          box.innerHTML += `<div class="mb-2"><strong>${d.user}</strong> <span class="text-muted" style="font-size:.7rem;">${d.ts}</span><br>${d.msg}</div>`;
+          box.scrollTop = box.scrollHeight;
+        });
+        socket.on('system', (d) => {
+          box.innerHTML += `<div class="text-muted mb-1" style="font-size:.72rem;font-style:italic;">${d.msg}</div>`;
+        });
+        document.getElementById('chat-form').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const inp = document.getElementById('chat-input');
+          if (!inp.value.trim()) return;
+          socket.emit('chat_message', {course_id: courseId, msg: inp.value});
+          inp.value = '';
+        });
+      </script>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

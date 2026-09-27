@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Too Many Requests{% endblock %}
+{% block page_title %}429 · Too Many Requests{% endblock %}
+{% block page_sub %}Please slow down{% endblock %}
+{% block content_public %}
+<div class="text-center py-5 fade-up">
+  <div style="font-size:5rem;color:#f59e0b;" class="bob">
+    <i class="bi bi-hourglass-split"></i>
+  </div>
+  <h1 class="display-4 fw-bold mt-3">429</h1>
+  <p class="lead text-muted">You've made too many requests. Please wait a moment.</p>
+  {% if error %}<p class="small text-muted">{{ error }}</p>{% endif %}
+  <a href="{{ url_for('index') }}" class="btn btn-primary mt-3"><i class="bi bi-house"></i> Go Home</a>
+</div>
+{% endblock %}

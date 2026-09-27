@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}EduHub — Modern Learning Platform{% endblock %}
+{% block content_public %}
+
+<section class="hero-lms text-white mb-5">
+  <div class="particles">
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+    <div class="particle p5"></div>
+  </div>
+  <div class="hero-inner container">
+    <span class="badge bg-warning text-dark mb-3 px-3 py-2">
+      <i class="bi bi-stars"></i> AI-powered learning platform
+    </span>
+    <h1 class="mb-3">
+      Learn anything.<br>
+      <span style="background:linear-gradient(90deg,#fde047,#f97316,#fde047);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Teach everything.</span>
+    </h1>
+    <p class="lead mb-4">
+      A modern platform with AI tutoring, real-time collaboration,
+      gamified progress, and verifiable PDF certificates.
+    </p>
+    <div class="d-flex flex-wrap gap-2">
+      <a href="{{ url_for('course_list') }}" class="btn btn-warning btn-lg fw-bold">
+        <i class="bi bi-book"></i> Browse Courses
+      </a>
+      <a href="{{ url_for('register') }}" class="btn btn-outline-light btn-lg fw-bold">
+        <i class="bi bi-rocket-takeoff"></i> Get Started Free
+      </a>
+    </div>
+
+    <div class="row g-4 mt-5">
+      <div class="col-4">
+        <div class="fs-3 fw-bold"><span class="counter" data-target="500" data-suffix="+">0</span></div>
+        <div class="small opacity-75">Courses</div>
+      </div>
+      <div class="col-4">
+        <div class="fs-3 fw-bold"><span class="counter" data-target="12000" data-suffix="+">0</span></div>
+        <div class="small opacity-75">Students</div>
+      </div>
+      <div class="col-4">
+        <div class="fs-3 fw-bold"><span class="counter" data-target="98" data-suffix="%">0</span></div>
+        <div class="small opacity-75">Satisfaction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if featured %}
+<div class="section-hd reveal">
+  <h5 style="font-weight:800;"><i class="bi bi-fire text-warning"></i> Featured Courses</h5>
+  <a href="{{ url_for('course_list') }}">View all →</a>
+</div>
+<div class="row g-4 mb-5 stagger">
+  {% for c in featured %}{% include "partials/_course_card.html" %}{% endfor %}
+</div>
+{% endif %}
+
+<div class="section-hd reveal">
+  <h5 style="font-weight:800;"><i class="bi bi-collection-play text-primary"></i> All Courses</h5>
+</div>
+
+{% if courses %}
+<div class="row g-4 stagger">
+  {% for c in courses %}{% include "partials/_course_card.html" %}{% endfor %}
+</div>
+{% else %}
+<div class="empty-state reveal">
+  <div class="empty-icon"><i class="bi bi-mortarboard"></i></div>
+  <h5>No courses yet</h5>
+  <p>Be the first to create one!</p>
+</div>
+{% endif %}
+
+{% endblock %}

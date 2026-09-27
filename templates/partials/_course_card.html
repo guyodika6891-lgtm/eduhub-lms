@@ -1,0 +1,45 @@
+<div class="col-sm-6 col-lg-4 col-xl-3">
+  <div class="course-card h-100">
+    <a href="{{ url_for('course_detail', slug=c.slug) }}" class="text-decoration-none">
+      {% if c.cover_url %}
+        <img src="{{ c.cover_url }}" class="course-cover" alt="{{ c.title }}">
+      {% else %}
+        <div class="course-cover bg-gradient-primary d-flex align-items-center justify-content-center text-white">
+          <i class="bi bi-mortarboard display-4"></i>
+        </div>
+      {% endif %}
+    </a>
+    <div class="card-body d-flex flex-column">
+      <div class="d-flex gap-2 mb-2 flex-wrap">
+        <span class="badge bg-light text-dark border">{{ c.category }}</span>
+        <span class="badge bg-primary-subtle text-primary">{{ c.level }}</span>
+        {% if c.price == 0 %}
+          <span class="badge bg-success-subtle text-success">FREE</span>
+        {% endif %}
+      </div>
+      <a href="{{ url_for('course_detail', slug=c.slug) }}" class="text-decoration-none text-body">
+        <h6 class="fw-bold mb-1" style="line-height:1.35;">{{ c.title }}</h6>
+      </a>
+      <p class="small text-muted mb-2">
+        <i class="bi bi-person-circle"></i> {{ c.instructor.username }}
+      </p>
+      <div class="small text-muted mb-3">
+        <i class="bi bi-collection-play"></i> {{ c.lesson_count }} lessons ·
+        <i class="bi bi-people"></i> {{ c.student_count }} students
+      </div>
+      <div class="mt-auto d-flex justify-content-between align-items-center">
+        <div class="fw-bold text-primary fs-6">
+          {% if c.price > 0 %}${{ "%.2f"|format(c.price) }}{% else %}<span class="text-success">Free</span>{% endif %}
+        </div>
+        <div class="text-warning small">
+          {% for i in range(c.avg_rating|int) %}
+            <i class="bi bi-star-fill"></i>
+          {% endfor %}
+          {% if c.avg_rating %}
+            <span class="text-muted ms-1 fw-semibold">{{ c.avg_rating }}</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

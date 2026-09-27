@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Leaderboard · EduHub{% endblock %}
+{% block page_title %}Leaderboard{% endblock %}
+{% block page_sub %}Top learners across the platform{% endblock %}
+
+{% block content %}
+
+<div class="stat-grid">
+  <div class="stat-tile fade-up" style="--tile-color:#fbbf24;--tile-color-2:#f59e0b;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-trophy-fill"></i></div></div>
+    <div class="tile-value counter" data-target="{{ rows|length }}">0</div>
+    <div class="tile-label">Ranked Students</div>
+  </div>
+  <div class="stat-tile fade-up-1" style="--tile-color:#10b981;--tile-color-2:#059669;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-star-fill"></i></div></div>
+    <div class="tile-value counter" data-target="{{ rows[0][1] if rows else 0 }}">0</div>
+    <div class="tile-label">Top Score</div>
+  </div>
+  <div class="stat-tile fade-up-2" style="--tile-color:#8b5cf6;--tile-color-2:#7c3aed;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-person-badge-fill"></i></div></div>
+    <div class="tile-value">{{ current_user.total_points }}</div>
+    <div class="tile-label">Your Points</div>
+  </div>
+</div>
+
+<div class="p-card">
+  {% if rows %}
+    {% for user, pts in rows %}
+      <div class="list-row" {% if user.id == current_user.id %}style="background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(139,92,246,.08));border-color:rgba(37,99,235,.25);"{% endif %}>
+        <div class="list-thumb"
+             style="{% if loop.index == 1 %}background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#0f172a;{% elif loop.index == 2 %}background:linear-gradient(135deg,#cbd5e1,#94a3b8);color:#0f172a;{% elif loop.index == 3 %}background:linear-gradient(135deg,#f97316,#ea580c);{% endif %}">
+          {% if loop.index <= 3 %}
+            <i class="bi bi-trophy-fill"></i>
+          {% else %}
+            {{ loop.index }}
+          {% endif %}
+        </div>
+        <div class="list-body">
+          <div class="list-title">{{ user.full_name or user.username }}</div>
+          <div class="list-meta">
+            {% if user.id == current_user.id %}<span class="pill pill-brand">You</span>{% endif %}
+          </div>
+        </div>
+        <div class="text-end">
+          <div class="fw-bold fs-6 text-primary">{{ pts }}</div>
+          <div class="small text-muted">points</div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon"><i class="bi bi-trophy"></i></div>
+      <h5>No rankings yet</h5>
+      <p>Complete lessons and quizzes to earn points!</p>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

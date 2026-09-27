@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Register · EduHub{% endblock %}
+{% block content_public %}
+
+<link href="{{ url_for('static', filename='css/neumorphic.css') }}" rel="stylesheet">
+
+<div class="auth-wrap">
+  <div class="float-circle"></div>
+  <div class="float-circle"></div>
+  <div class="float-circle"></div>
+  <div class="float-circle"></div>
+
+  <div class="auth-card" style="max-width:540px;">
+    <div class="auth-icon">
+      <i class="bi bi-person-plus-fill"></i>
+    </div>
+
+    <div class="auth-title">
+      <h2>Create Account</h2>
+      <p>Join EduHub and start learning today</p>
+    </div>
+
+    <form method="post">
+      {{ form.hidden_tag() }}
+
+      <div class="row g-3">
+        <div class="col-md-6 nm-field">
+          {{ form.username(placeholder="Username") }}
+        </div>
+        <div class="col-md-6 nm-field">
+          {{ form.full_name(placeholder="Full name") }}
+        </div>
+      </div>
+
+      <div class="nm-field">
+        {{ form.email(placeholder="Email address", type="email") }}
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6 nm-field">
+          {{ form.password(placeholder="Password") }}
+        </div>
+        <div class="col-md-6 nm-field">
+          {{ form.confirm(placeholder="Confirm password") }}
+        </div>
+      </div>
+
+      <div class="nm-field">
+        <label style="display:block;font-size:.82rem;font-weight:600;margin-bottom:8px;padding-left:4px;">
+          I am a
+        </label>
+        {{ form.role(style="width:100%;") }}
+      </div>
+
+      <button class="nm-btn" type="submit">
+        <i class="bi bi-rocket-takeoff"></i> Create Account
+      </button>
+    </form>
+
+    <p class="nm-footer">
+      Already have an account? <a href="{{ url_for('login') }}">Login</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <h4 class="mb-4">{% if lesson %}Edit Lesson{% else %}Add Lesson{% endif %} — {{ course.title }}</h4>
+        <form method="post">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">{{ form.title.label(class="form-label") }}{{ form.title(class="form-control") }}</div>
+          <div class="mb-3">{{ form.content.label(class="form-label") }}{{ form.content(class="form-control", rows="6") }}</div>
+          <div class="row g-3">
+            <div class="col-md-6">{{ form.video_url.label(class="form-label") }}{{ form.video_url(class="form-control", placeholder="https://youtube.com/embed/...") }}</div>
+            <div class="col-md-6">{{ form.attachment_url.label(class="form-label") }}{{ form.attachment_url(class="form-control") }}</div>
+            <div class="col-md-6">{{ form.duration_minutes.label(class="form-label") }}{{ form.duration_minutes(class="form-control") }}</div>
+            <div class="col-md-6">{{ form.order_index.label(class="form-label") }}{{ form.order_index(class="form-control") }}</div>
+          </div>
+          <button class="btn btn-primary mt-4">Save</button>
+          <a href="{{ url_for('course_detail', slug=course.slug) }}" class="btn btn-outline-secondary mt-4">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

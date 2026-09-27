@@ -1,0 +1,589 @@
+/* ==========================================================
+   EduHub — Advanced Animation Library
+   All animations work with every theme (light/dark/neumo/contrast)
+   ========================================================== */
+
+/* ===================== KEYFRAMES ===================== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(.6); }
+  70% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(120%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(120%); }
+}
+
+@keyframes rippleOut {
+  to { transform: scale(4); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(37,99,235,.5); }
+  70% { box-shadow: 0 0 0 20px rgba(37,99,235,0); }
+  100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
+}
+
+@keyframes bellShake {
+  0%, 100% { transform: rotate(0); }
+  10%, 30%, 50% { transform: rotate(-12deg); }
+  20%, 40%, 60% { transform: rotate(12deg); }
+  70% { transform: rotate(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bounceIn {
+  0% { opacity: 0; transform: scale(.3); }
+  50% { opacity: 1; transform: scale(1.08); }
+  70% { transform: scale(.95); }
+  100% { transform: scale(1); }
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-100vh) rotate(0); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(37,99,235,.3); }
+  50% { box-shadow: 0 0 40px rgba(37,99,235,.6); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  25% { transform: translateY(-12px) translateX(8px) rotate(2deg); }
+  50% { transform: translateY(-6px) translateX(-8px) rotate(-2deg); }
+  75% { transform: translateY(-18px) translateX(4px) rotate(1deg); }
+}
+
+@keyframes cursorGlow {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.15); }
+}
+
+/* ===================== PAGE TRANSITION ===================== */
+body.page-loading {
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+body.page-loaded {
+  opacity: 1;
+}
+
+/* Fade-up on first paint */
+.page-content > * {
+  animation: fadeInUp .6s cubic-bezier(.4,0,.2,1) both;
+}
+.page-content > *:nth-child(1) { animation-delay: .05s; }
+.page-content > *:nth-child(2) { animation-delay: .10s; }
+.page-content > *:nth-child(3) { animation-delay: .15s; }
+.page-content > *:nth-child(4) { animation-delay: .20s; }
+.page-content > *:nth-child(5) { animation-delay: .25s; }
+.page-content > *:nth-child(6) { animation-delay: .30s; }
+
+/* ===================== SIDEBAR ===================== */
+.sidebar {
+  animation: fadeInLeft .5s cubic-bezier(.4,0,.2,1) both;
+}
+.sidebar-link {
+  animation: fadeInLeft .4s cubic-bezier(.4,0,.2,1) both;
+}
+.sidebar-link:nth-child(1) { animation-delay: .05s; }
+.sidebar-link:nth-child(2) { animation-delay: .10s; }
+.sidebar-link:nth-child(3) { animation-delay: .15s; }
+.sidebar-link:nth-child(4) { animation-delay: .20s; }
+.sidebar-link:nth-child(5) { animation-delay: .25s; }
+.sidebar-link:nth-child(6) { animation-delay: .30s; }
+.sidebar-link:nth-child(7) { animation-delay: .35s; }
+.sidebar-link:nth-child(8) { animation-delay: .40s; }
+
+/* ===================== TOPBAR ===================== */
+.topbar {
+  animation: fadeInDown .5s cubic-bezier(.4,0,.2,1) both;
+}
+
+/* ===================== STAT TILES ===================== */
+.stat-tile {
+  animation: fadeInUp .6s cubic-bezier(.4,0,.2,1) both;
+}
+.stat-tile:nth-child(1) { animation-delay: .05s; }
+.stat-tile:nth-child(2) { animation-delay: .12s; }
+.stat-tile:nth-child(3) { animation-delay: .19s; }
+.stat-tile:nth-child(4) { animation-delay: .26s; }
+.stat-tile:nth-child(5) { animation-delay: .33s; }
+.stat-tile:nth-child(6) { animation-delay: .40s; }
+
+.stat-tile .tile-icon {
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.stat-tile:hover .tile-icon {
+  transform: scale(1.15) rotate(-8deg);
+}
+
+.stat-tile .tile-value {
+  transition: transform .35s ease;
+}
+.stat-tile:hover .tile-value {
+  transform: scale(1.05);
+}
+
+/* ===================== CARDS ===================== */
+.p-card {
+  animation: fadeInUp .6s cubic-bezier(.4,0,.2,1) both;
+}
+.p-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Course cards with tilt + cover zoom */
+.course-card {
+  animation: fadeInUp .6s cubic-bezier(.4,0,.2,1) both;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Stagger in grids */
+.row > .col-sm-6:nth-child(1) .course-card,
+.stagger > *:nth-child(1) .course-card { animation-delay: .05s; }
+.row > .col-sm-6:nth-child(2) .course-card,
+.stagger > *:nth-child(2) .course-card { animation-delay: .12s; }
+.row > .col-sm-6:nth-child(3) .course-card,
+.stagger > *:nth-child(3) .course-card { animation-delay: .19s; }
+.row > .col-sm-6:nth-child(4) .course-card,
+.stagger > *:nth-child(4) .course-card { animation-delay: .26s; }
+.row > .col-sm-6:nth-child(5) .course-card,
+.stagger > *:nth-child(5) .course-card { animation-delay: .33s; }
+.row > .col-sm-6:nth-child(6) .course-card,
+.stagger > *:nth-child(6) .course-card { animation-delay: .40s; }
+.row > .col-sm-6:nth-child(7) .course-card { animation-delay: .47s; }
+.row > .col-sm-6:nth-child(8) .course-card { animation-delay: .54s; }
+.row > .col-sm-6:nth-child(9) .course-card { animation-delay: .61s; }
+.row > .col-sm-6:nth-child(10) .course-card { animation-delay: .68s; }
+
+/* ===================== BUTTONS ===================== */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform .25s, box-shadow .25s, background .25s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary::before,
+.btn-success::before,
+.btn-warning::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent);
+  transition: left .8s;
+}
+.btn-primary:hover::before,
+.btn-success:hover::before,
+.btn-warning:hover::before {
+  left: 100%;
+}
+
+/* Ripple container */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,.6);
+  transform: scale(0);
+  pointer-events: none;
+  animation: rippleOut .65s ease-out;
+  width: 20px; height: 20px;
+  margin-left: -10px; margin-top: -10px;
+}
+
+/* ===================== NAV LINKS ===================== */
+.sidebar-link::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand, #2563eb);
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.sidebar-link:hover::after {
+  transform: translateY(-50%) scale(1);
+}
+
+/* ===================== FORMS ===================== */
+.form-control,
+.form-select,
+.nm-field input,
+.nm-field select {
+  transition: all .35s cubic-bezier(.4,0,.2,1);
+}
+.form-control:focus,
+.form-select:focus {
+  transform: translateY(-1px);
+}
+
+/* Animated input underline */
+.form-control::placeholder {
+  transition: opacity .3s;
+}
+.form-control:focus::placeholder {
+  opacity: .5;
+}
+
+/* ===================== NOTIFICATIONS ===================== */
+#toast-container .alert {
+  animation: slideInRight .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+/* Bell shake on hover */
+.icon-btn .bi-bell,
+.icon-btn .bi-bell-fill {
+  transition: transform .3s;
+}
+.icon-btn:hover .bi-bell,
+.icon-btn:hover .bi-bell-fill {
+  animation: bellShake .6s ease-in-out;
+}
+
+/* ===================== AI BUBBLE ===================== */
+.ai-bubble {
+  position: relative;
+}
+.ai-bubble::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #7c3aed, #f59e0b, #2563eb);
+  background-size: 300% 300%;
+  animation: gradientMove 6s ease infinite;
+  filter: blur(12px);
+  z-index: -1;
+  opacity: .7;
+}
+.ai-bubble::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: pulseRing 2.5s ease-out infinite;
+  pointer-events: none;
+}
+
+/* ===================== SKELETON LOADERS ===================== */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(148,163,184,.15) 25%,
+    rgba(148,163,184,.3) 50%,
+    rgba(148,163,184,.15) 75%
+  );
+  background-size: 200% 100%;
+  animation: gradientMove 1.6s linear infinite;
+  border-radius: 8px;
+  min-height: 16px;
+}
+.skeleton-card {
+  height: 220px;
+  border-radius: var(--radius, 16px);
+}
+
+/* ===================== PROGRESS BARS ===================== */
+.p-progress-fill {
+  position: relative;
+  overflow: hidden;
+}
+.p-progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.4),
+    transparent
+  );
+  animation: shimmer 2.5s infinite;
+}
+
+/* ===================== COUNTERS ===================== */
+.counter {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===================== SCROLL REVEAL ===================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .8s cubic-bezier(.4,0,.2,1), transform .8s cubic-bezier(.4,0,.2,1);
+}
+.reveal.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===================== STAGGER CHILDREN ===================== */
+.stagger > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all .7s cubic-bezier(.4,0,.2,1);
+}
+.stagger.reveal-in > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.stagger.reveal-in > *:nth-child(1) { transition-delay: .05s; }
+.stagger.reveal-in > *:nth-child(2) { transition-delay: .12s; }
+.stagger.reveal-in > *:nth-child(3) { transition-delay: .19s; }
+.stagger.reveal-in > *:nth-child(4) { transition-delay: .26s; }
+.stagger.reveal-in > *:nth-child(5) { transition-delay: .33s; }
+.stagger.reveal-in > *:nth-child(6) { transition-delay: .40s; }
+.stagger.reveal-in > *:nth-child(7) { transition-delay: .47s; }
+.stagger.reveal-in > *:nth-child(8) { transition-delay: .54s; }
+.stagger.reveal-in > *:nth-child(9) { transition-delay: .61s; }
+.stagger.reveal-in > *:nth-child(10) { transition-delay: .68s; }
+.stagger.reveal-in > *:nth-child(n+11) { transition-delay: .75s; }
+
+/* ===================== BADGES BOUNCE-IN ===================== */
+.badge-pill-gold,
+.achievement-badge {
+  animation: bounceIn .6s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+/* ===================== EMPTY STATE ===================== */
+.empty-state {
+  animation: fadeInUp .7s cubic-bezier(.4,0,.2,1) both;
+}
+.empty-state .empty-icon {
+  animation: bob 3s ease-in-out infinite, glow 3s ease-in-out infinite;
+}
+
+/* ===================== QUIZ OPTIONS ===================== */
+.form-check {
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+.form-check:hover {
+  background: rgba(37,99,235,.06);
+  transform: translateX(6px);
+}
+.form-check-input:checked {
+  animation: popIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ===================== TABLE ROWS ===================== */
+.p-table tbody tr {
+  animation: fadeInUp .4s cubic-bezier(.4,0,.2,1) both;
+}
+.p-table tbody tr:nth-child(1) { animation-delay: .05s; }
+.p-table tbody tr:nth-child(2) { animation-delay: .1s; }
+.p-table tbody tr:nth-child(3) { animation-delay: .15s; }
+.p-table tbody tr:nth-child(4) { animation-delay: .2s; }
+.p-table tbody tr:nth-child(5) { animation-delay: .25s; }
+.p-table tbody tr:nth-child(6) { animation-delay: .3s; }
+.p-table tbody tr:nth-child(7) { animation-delay: .35s; }
+.p-table tbody tr:nth-child(8) { animation-delay: .4s; }
+
+/* ===================== THEME FLASH ===================== */
+.theme-flash {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: radial-gradient(circle at center, rgba(37,99,235,.25), transparent 60%);
+  animation: fadeIn .3s, fadeIn .3s reverse .3s;
+}
+
+/* ===================== LOADING SPINNER OVERLAY ===================== */
+.page-spinner {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15,23,42,.35);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+}
+.page-spinner.show {
+  opacity: 1;
+  visibility: visible;
+}
+.page-spinner .spinner-ring {
+  width: 56px;
+  height: 56px;
+  border: 5px solid rgba(255,255,255,.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+/* Button loading state */
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 18px; height: 18px;
+  margin: -9px 0 0 -9px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  color: #fff;
+}
+.btn-loading.btn-outline-primary::after { color: #2563eb; }
+
+/* ===================== HERO CURSOR GLOW ===================== */
+.hero-cursor-glow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.15), transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity .3s;
+  animation: cursorGlow 3s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+/* ===================== BACK TO TOP ===================== */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  z-index: 1040;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all .35s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 8px 24px rgba(37,99,235,.35);
+}
+.back-to-top-btn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.back-to-top-btn:hover {
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 14px 36px rgba(37,99,235,.55);
+}
+
+/* ===================== CONFETTI ===================== */
+.confetti-piece {
+  position: fixed;
+  top: -20px;
+  width: 10px;
+  height: 14px;
+  z-index: 9999;
+  pointer-events: none;
+  animation: confettiFall 3.5s linear forwards;
+}
+
+/* ===================== CHART ANIMATION ===================== */
+canvas {
+  animation: fadeInUp .8s cubic-bezier(.4,0,.2,1) both;
+  animation-delay: .2s;
+}
+
+/* ===================== AVAILABLE ON HOVER ===================== */
+.hover-lift {
+  transition: transform .35s cubic-bezier(.4,0,.2,1), box-shadow .35s;
+}
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(37,99,235,.18);
+}
+
+/* ===================== PREFERS REDUCED MOTION ===================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

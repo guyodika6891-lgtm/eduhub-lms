@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Teacher Dashboard · EduHub{% endblock %}
+{% block page_title %}Teacher Dashboard{% endblock %}
+{% block page_sub %}Manage your courses and track student progress{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-end gap-2 mb-3">
+  <a href="{{ url_for('teacher_analytics') }}" class="btn btn-outline-primary btn-sm">
+    <i class="bi bi-graph-up-arrow"></i> View Analytics
+  </a>
+  <a href="{{ url_for('course_create') }}" class="btn btn-primary btn-sm">
+    <i class="bi bi-plus-lg"></i> New Course
+  </a>
+</div>
+
+<!-- STATS -->
+<div class="stat-grid">
+  <div class="stat-tile fade-up" style="--tile-color:#2563eb;--tile-color-2:#7c3aed;">
+    <div class="tile-top">
+      <div class="tile-icon"><i class="bi bi-easel2-fill"></i></div>
+    </div>
+    <div class="tile-value counter" data-target="{{ courses|length }}">0</div>
+    <div class="tile-label">Total Courses</div>
+  </div>
+
+  <div class="stat-tile fade-up-1" style="--tile-color:#10b981;--tile-color-2:#059669;">
+    <div class="tile-top">
+      <div class="tile-icon"><i class="bi bi-people-fill"></i></div>
+      <span class="tile-trend"><i class="bi bi-arrow-up-short"></i> Growing</span>
+    </div>
+    <div class="tile-value counter" data-target="{{ total_students }}">0</div>
+    <div class="tile-label">Total Students</div>
+  </div>
+
+  <div class="stat-tile fade-up-2" style="--tile-color:#f59e0b;--tile-color-2:#d97706;">
+    <div class="tile-top">
+      <div class="tile-icon"><i class="bi bi-collection-play-fill"></i></div>
+    </div>
+    <div class="tile-value counter" data-target="{{ total_lessons }}">0</div>
+    <div class="tile-label">Lessons Created</div>
+  </div>
+
+  <div class="stat-tile fade-up-3" style="--tile-color:#8b5cf6;--tile-color-2:#7c3aed;">
+    <div class="tile-top">
+      <div class="tile-icon"><i class="bi bi-star-fill"></i></div>
+    </div>
+    <div class="tile-value counter" data-target="{{ current_user.total_points }}">0</div>
+    <div class="tile-label">Your Points</div>
+  </div>
+</div>
+
+<!-- COURSES LIST -->
+<div class="section-hd">
+  <h5><i class="bi bi-easel2 text-primary"></i> My Courses</h5>
+  <a href="{{ url_for('course_create') }}">+ New course</a>
+</div>
+
+{% if courses %}
+<div class="p-card" style="padding:12px;">
+  {% for c in courses %}
+    <div class="list-row">
+      <div class="list-thumb">
+        {% if c.cover_url %}
+          <img src="{{ c.cover_url }}" alt="{{ c.title }}">
+        {% else %}
+          <i class="bi bi-mortarboard"></i>
+        {% endif %}
+      </div>
+      <div class="list-body">
+        <h6 class="list-title">{{ c.title }}</h6>
+        <div class="list-meta">
+          <span><i class="bi bi-people"></i> {{ c.student_count }} students</span>
+          <span><i class="bi bi-collection-play"></i> {{ c.lesson_count }} lessons</span>
+          {% if c.published %}
+            <span class="pill pill-success"><i class="bi bi-check-circle"></i> Published</span>
+          {% else %}
+            <span class="pill pill-warning"><i class="bi bi-pencil"></i> Draft</span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="{{ url_for('lesson_create', slug=c.slug) }}" class="btn btn-sm btn-outline-primary" title="Add Lesson">
+          <i class="bi bi-plus-lg"></i>
+        </a>
+        <a href="{{ url_for('course_edit', slug=c.slug) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+          <i class="bi bi-pencil"></i>
+        </a>
+        <a href="{{ url_for('course_detail', slug=c.slug) }}" class="btn btn-sm btn-outline-primary" title="View">
+          <i class="bi bi-eye"></i>
+        </a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon"><i class="bi bi-easel2"></i></div>
+  <h5>No courses yet</h5>
+  <p>Create your first course and start teaching.</p>
+  <a href="{{ url_for('course_create') }}" class="btn btn-primary">
+    <i class="bi bi-plus-lg"></i> Create Course
+  </a>
+</div>
+{% endif %}
+
+{% endblock %}

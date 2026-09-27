@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Analytics · EduHub{% endblock %}
+{% block page_title %}Analytics Dashboard{% endblock %}
+{% block page_sub %}Last 30 days performance overview{% endblock %}
+
+{% block content %}
+
+<div class="stat-grid">
+  <div class="stat-tile fade-up" style="--tile-color:#2563eb;--tile-color-2:#7c3aed;">
+    <div class="tile-top">
+      <div class="tile-icon"><i class="bi bi-graph-up-arrow"></i></div>
+      <span class="tile-trend"><i class="bi bi-arrow-up-short"></i> 30d</span>
+    </div>
+    <div class="tile-value counter" data-target="{{ counts|sum }}">0</div>
+    <div class="tile-label">Total Enrollments</div>
+  </div>
+
+  <div class="stat-tile fade-up-1" style="--tile-color:#10b981;--tile-color-2:#059669;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-patch-question-fill"></i></div></div>
+    <div class="tile-value counter" data-target="{{ quiz_attempts }}">0</div>
+    <div class="tile-label">Quiz Attempts</div>
+  </div>
+
+  <div class="stat-tile fade-up-2" style="--tile-color:#f59e0b;--tile-color-2:#d97706;">
+    <div class="tile-top"><div class="tile-icon"><i class="bi bi-trophy-fill"></i></div></div>
+    <div class="tile-value counter" data-target="{{ top_courses|length }}">0</div>
+    <div class="tile-label">Active Courses</div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="chart-card fade-up-2">
+      <h5>Enrollment Trend</h5>
+      <p>New student enrollments over the last 30 days</p>
+      <canvas id="enrollChart" height="90"></canvas>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="chart-card h-100 fade-up-3">
+      <h5>Course Distribution</h5>
+      <p>Students per top course</p>
+      <canvas id="topChart" height="220"></canvas>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+const gradient = (ctx) => {
+  const g = ctx.createLinearGradient(0, 0, 0, 300);
+  g.addColorStop(0, 'rgba(37,99,235,.35)');
+  g.addColorStop(1, 'rgba(37,99,235,0)');
+  return g;
+};
+
+const eCtx = document.getElementById('enrollChart').getContext('2d');
+new Chart(eCtx, {
+  type: 'line',
+  data: {
+    labels: {{ days|tojson }},
+    datasets: [{
+      label: 'Enrollments',
+      data: {{ counts|tojson }},
+      borderColor: '#2563eb',
+      borderWidth: 3,
+      backgroundColor: gradient(eCtx),
+      fill: true,
+      tension: .4,
+      pointRadius: 3,
+      pointHoverRadius: 6,
+      pointBackgroundColor: '#2563eb',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#0f172a',
+        padding: 12,
+        cornerRadius: 10,
+        titleFont: { weight: '700' },
+        bodyFont: { weight: '500' }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 11 } } },
+      y: { beginAtZero: true, grid: { color: 'rgba(148,163,184,.15)' }, ticks: { color: '#94a3b8', font: { size: 11 } } }
+    }
+  }
+});
+
+const tCtx = document.getElementById('topChart').getContext('2d');
+new Chart(tCtx, {
+  type: 'doughnut',
+  data: {
+    labels: {{ top_courses|map(attribute='title')|list|tojson }},
+    datasets: [{
+      data: {{ top_courses|map(attribute='student_count')|list|tojson }},
+      backgroundColor: ['#2563eb','#8b5cf6','#f59e0b','#10b981','#06b6d4'],
+      borderWidth: 0,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { color: '#64748b', font: { size: 11 }, padding: 12, boxWidth: 12, usePointStyle: true }
+      }
+    }
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <h4 class="mb-4">{% if course %}Edit Course{% else %}Create Course{% endif %}</h4>
+        <form method="post">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">{{ form.title.label(class="form-label") }}{{ form.title(class="form-control") }}</div>
+          <div class="mb-3">{{ form.description.label(class="form-label") }}{{ form.description(class="form-control", rows="4") }}</div>
+          <div class="row g-3">
+            <div class="col-md-6">{{ form.category.label(class="form-label") }}{{ form.category(class="form-select") }}</div>
+            <div class="col-md-6">{{ form.level.label(class="form-label") }}{{ form.level(class="form-select") }}</div>
+            <div class="col-md-6">{{ form.price.label(class="form-label") }}{{ form.price(class="form-control") }}</div>
+            <div class="col-md-6 d-flex align-items-end">
+              <div class="form-check">{{ form.published(class="form-check-input") }} {{ form.published.label(class="form-check-label") }}</div>
+            </div>
+            <div class="col-12">{{ form.cover_url.label(class="form-label") }}{{ form.cover_url(class="form-control", placeholder="https://...") }}</div>
+          </div>
+          <button class="btn btn-primary mt-4">{{ form.submit.label.text }}</button>
+          <a href="{{ url_for('teacher_dashboard') }}" class="btn btn-outline-secondary mt-4">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

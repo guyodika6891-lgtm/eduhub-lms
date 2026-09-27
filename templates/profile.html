@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <h4>Profile Settings</h4>
+        <p class="text-muted small">Points: <strong>{{ current_user.total_points }}</strong> · Badges: <strong>{{ current_user.badges|length }}</strong></p>
+        <form method="post">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">{{ form.full_name.label(class="form-label") }}{{ form.full_name(class="form-control") }}</div>
+          <div class="mb-3">{{ form.bio.label(class="form-label") }}{{ form.bio(class="form-control", rows="3") }}</div>
+          <div class="mb-3">{{ form.avatar_url.label(class="form-label") }}{{ form.avatar_url(class="form-control") }}</div>
+          <button class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
