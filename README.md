@@ -29,7 +29,7 @@ A modern, AI-powered LMS built with **Flask**, **Bootstrap 5**, **Socket.IO**, a
 
 ## 🚀 Live Demo
 
-👉 **[View Live Demo](https://eduhub-lms-xxxx.onrender.com)**
+👉 **[View Live Demo](https://eduhub-lms-1.onrender.com)**
 
 ---
 
@@ -71,7 +71,7 @@ Open **http://127.0.0.1:5000** — first registered user becomes **admin** 👑.
 ## 🌐 Deploy to Render
 
 1. Push code to GitHub
-2. Go to [render.com](https://render.com) → **New → Blueprint**
+2. Go to [render.com](https://eduhub-lms-1.onrender.com) → **New → Blueprint**
 3. Select your repo → Render reads `render.yaml` → click **Apply**
 4. Wait ~4 minutes → done 🚀
 
