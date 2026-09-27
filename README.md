@@ -111,4 +111,4 @@ MIT — see [LICENSE](LICENSE).
 
 **GUYO DIKA**
 Lecturer at Werabe University
-🌐 [Portfolio](https://github.com/<your-username>) · 📧 [guyodika6891@gmail.com](mailto:guyodika6891@gmail.com)
+🌐 [Portfolio](https://github.com/guyodika6891-lgtm) · 📧 [guyodika6891@gmail.com](mailto:guyodika6891@gmail.com)
