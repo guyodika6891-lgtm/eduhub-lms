@@ -18,9 +18,5 @@ stripe==11.0.0
 Flask-Mail==0.9.1
 itsdangerous==2.2.0
 qrcode[pil]==7.4.2
-
-# ===== SECURITY =====
 Flask-Limiter==3.5.0
 flask-talisman==1.1.0
-python-magic==0.4.27
-python-magic-bin==0.4.14
